@@ -28,4 +28,4 @@ RUN python manage.py migrate
 EXPOSE 8000
 
 # Run Django commands inside Docker
-CMD ["gunicorn", "FamilyFeud.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "9", "--timeout", "120"]
+CMD ["gunicorn", "ExamBotApi.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "9", "--timeout", "120"]

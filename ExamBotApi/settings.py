@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from email.policy import default
 from pathlib import Path
 from decouple import config
 
@@ -97,12 +97,12 @@ DB = config("DB", default="sqlite")
 if DB == 'postgres':
     DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USERNAME"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOSTNAME"),
-        "PORT": config("DB_PORT", cast=int),
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config("DB_NAME", default="postgres"),
+        "USER": config("DB_USERNAME", default="postgres"),
+        "PASSWORD": config("DB_PASSWORD", default="ouyRv99h0EA5DcwXzbvp"),
+        "HOST": config("DB_HOSTNAME", default="postgres-proxy.tarjan.svc"),
+        "PORT": config("DB_PORT", cast=int, default=5432),
         }
     }
 
