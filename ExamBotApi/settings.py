@@ -13,6 +13,8 @@ from email.policy import default
 from pathlib import Path
 import os
 
+from django.middleware.csrf import CSRF_ALLOWED_CHARS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +29,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", default='django-insecure-as!k7@uhz^^%!)!rrv
 DEBUG = os.getenv("DEBUG", default=True)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default='*').split(",")
-
+CSRF_TRUSTED_ORIGINS = os.getenv("ALLOWED_HOSTS", default='*').split(",")
+APP_HOST = os.getenv("APP_HOST")
 # Application definition
 
 INSTALLED_APPS = [
