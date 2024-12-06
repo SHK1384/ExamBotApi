@@ -29,8 +29,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", default='django-insecure-as!k7@uhz^^%!)!rrv
 DEBUG = os.getenv("DEBUG", default=True)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default='*').split(",")
-CSRF_TRUSTED_ORIGINS = os.getenv("ALLOWED_HOSTS", default='*').split(",")
-APP_HOST = os.getenv("APP_HOST")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", default='*').split(",")
+APP_HOST = os.getenv("APP_HOST", default="http://localhost:8000")
 # Application definition
 
 INSTALLED_APPS = [
