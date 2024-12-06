@@ -88,23 +88,23 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'exambot',
         'USER': 'postgres',
-        'PASSWORD': 'shk1384',
-        'HOST': 'localhost',
+        'PASSWORD': 'ouyRv99h0EA5DcwXzbvp',
+        'HOST': 'postgres-proxy.tarjan.svc',
         'PORT': '5432',
     }
 }
-DB = config("DB", default="sqlite")
-if DB == 'postgres':
-    DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("DB_NAME", default="postgres"),
-        "USER": config("DB_USERNAME", default="postgres"),
-        "PASSWORD": config("DB_PASSWORD", default="ouyRv99h0EA5DcwXzbvp"),
-        "HOST": config("DB_HOSTNAME", default="postgres-proxy.tarjan.svc"),
-        "PORT": config("DB_PORT", cast=int, default=5432),
-        }
-    }
+# DB = config("DB", default="sqlite")
+# if DB == 'postgres':
+#     DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": config("DB_NAME", default="postgres"),
+#         "USER": config("DB_USERNAME", default="postgres"),
+#         "PASSWORD": config("DB_PASSWORD", default="ouyRv99h0EA5DcwXzbvp"),
+#         "HOST": config("DB_HOSTNAME", default="postgres-proxy.tarjan.svc"),
+#         "PORT": config("DB_PORT", cast=int, default=5432),
+#         }
+#     }
 
 
 # Password validation
