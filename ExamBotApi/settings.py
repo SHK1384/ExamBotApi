@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from email.policy import default
 from pathlib import Path
-from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default='django-insecure-as!k7@uhz^^%!)!rrvj7r^*d*f57rpo$1#mf2(q+mj8bxq_i@f')
+SECRET_KEY = os.getenv("SECRET_KEY", default='django-insecure-as!k7@uhz^^%!)!rrvj7r^*d*f57rpo$1#mf2(q+mj8bxq_i@f')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = os.getenv("DEBUG", default=True)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 # Application definition
 
@@ -88,23 +88,23 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'exambot',
         'USER': 'postgres',
-        'PASSWORD': 'ouyRv99h0EA5DcwXzbvp',
-        'HOST': 'postgres-proxy.tarjan.svc',
+        'PASSWORD': 'shk1384',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
-# DB = config("DB", default="sqlite")
-# if DB == 'postgres':
-#     DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": config("DB_NAME", default="postgres"),
-#         "USER": config("DB_USERNAME", default="postgres"),
-#         "PASSWORD": config("DB_PASSWORD", default="ouyRv99h0EA5DcwXzbvp"),
-#         "HOST": config("DB_HOSTNAME", default="postgres-proxy.tarjan.svc"),
-#         "PORT": config("DB_PORT", cast=int, default=5432),
-#         }
-#     }
+DB = os.getenv("DB", default="sqlite")
+if DB == 'postgres':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASSWORD"),
+            "HOST": os.getenv("DB_HOST"),
+            "PORT": os.getenv("DB_PORT"),
+        }
+    }
 
 
 # Password validation
