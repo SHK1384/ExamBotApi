@@ -22,7 +22,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . /app/
 
-RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate
 
 # Expose port 8000 to the outside world
