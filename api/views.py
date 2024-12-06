@@ -1,0 +1,30 @@
+from django.shortcuts import render
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
+from .models import ExamBox, User, ExamResult, Exam
+
+from api.serializers import ExamBoxSerializer, ExamResultSerializer
+
+
+# Create your views here.
+class ProfileView(ViewSet):
+
+    exam_box_serializer = ExamBoxSerializer
+    exam_result_serializer = ExamResultSerializer
+
+    def get_exam_box_list(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        exam_box = ExamBox.objects.filter(department=user.department)
+        serialized_output = self.exam_box_serializer(exam_box, many=True)
+        return Response(serialized_output.data, status=status.HTTP_200_OK)
+
+    def add_exam_result(self, request):
+        serialized_output = self.exam_result_serializer(data=request.data)
+        if serialized_output.is_valid():
+            data = serialized_output.data
+            user = User.objects.get(id=data["user_id"])
+            exam = Exam.objects.get(id=data["exam_id"])
+            exam_result = ExamResult.objects.create(user=user, exam=exam, answers=data["answers"])
+            exam_result.save()
+            return Response({"message": "Done!"}, status=status.HTTP_200_OK)
