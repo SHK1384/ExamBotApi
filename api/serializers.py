@@ -1,11 +1,17 @@
 from rest_framework import serializers
 
-from api.models import ExamBox, Exam, Department
+from api.models import ExamBox, Exam, Department, User
+
 
 class ExamResultSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
     exam_id = serializers.IntegerField()
     answers = serializers.ListField(child=serializers.IntegerField())
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 class ExamBoxSerializer(serializers.ModelSerializer):
     class Meta:

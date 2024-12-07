@@ -8,7 +8,12 @@ get_exam_box_list = ProfileView.as_view({
 add_exam_result = ProfileView.as_view({
     'post': 'add_exam_result'
 })
+
+get_user_by_id = ProfileView.as_view({
+    'get': 'get_user_by_id'
+})
 urlpatterns = [
     path('get-exam-box-list/<int:user_id>', get_exam_box_list, name='get_exam_box_list'),
-    path('add-exam-result', add_exam_result, name='add_exam_result'),
+    path('add-exam-result/', add_exam_result, name='add_exam_result'),
+    path('get-user-by-id/<int:user_id>', get_user_by_id, name='get_user_by_id'),
 ]
