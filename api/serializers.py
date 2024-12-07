@@ -8,16 +8,6 @@ class ExamResultSerializer(serializers.Serializer):
     exam_id = serializers.IntegerField()
     answers = serializers.ListField(child=serializers.IntegerField())
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
-
-class ExamBoxSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ExamBox
-        fields = '__all__'
-
 class ExamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exam
@@ -26,4 +16,19 @@ class ExamSerializer(serializers.ModelSerializer):
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
+        fields = '__all__'
+
+class ExamBoxSerializer(serializers.ModelSerializer):
+    exam = ExamSerializer()
+    department = DepartmentSerializer()
+
+    class Meta:
+        model = ExamBox
+        fields = '__all__'
+
+class UserSerializer(serializers.ModelSerializer):
+    department = DepartmentSerializer()
+
+    class Meta:
+        model = User
         fields = '__all__'
