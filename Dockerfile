@@ -1,9 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.13-slim
-
-# Prevent Python from writing .pyc files to disc
-ENV PYTHONUNBUFFERED=1
-# Ensure stdout/stderr is outputted immediately
+FROM hub.hamdocker.ir/library/python:3.13
 
 # Set work directory
 WORKDIR /app
