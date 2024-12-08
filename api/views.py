@@ -24,7 +24,7 @@ class ProfileView(ViewSet):
         serialized_output = self.exam_result_serializer(data=request.data)
         if serialized_output.is_valid():
             data = serialized_output.data
-            user = User.objects.get(id=data["user_id"])
+            user = User.objects.get(userid=data["user_id"])
             exam = Exam.objects.get(id=data["exam_id"])
             exam_result = ExamResult.objects.create(user=user, exam=exam, correct_answer=data["correct_answer"], wrong_answer=data["wrong_answer"], not_answered=data["not_answered"])
             exam_result.save()
