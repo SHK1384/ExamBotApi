@@ -25,6 +25,7 @@ class Exam(models.Model):
     name = models.CharField(max_length=50)
     number_of_questions = models.IntegerField()
     file = models.FileField(upload_to='exam_files')
+    answers = ArrayField(models.IntegerField())
 
     def __str__(self):
         return f"{self.name}"
@@ -33,7 +34,9 @@ class ExamResult(models.Model):
     id = models.AutoField(primary_key=True)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    answers = ArrayField(models.IntegerField())
+    correct_answer = models.IntegerField()
+    wrong_answer = models.IntegerField()
+    not_answered = models.IntegerField()
 
     def __str__(self):
         return f"{self.user} - {self.exam}"
