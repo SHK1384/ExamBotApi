@@ -35,9 +35,10 @@ class ProfileView(ViewSet):
         serialized_output = self.user_serializer(user)
         return Response(serialized_output.data, status=status.HTTP_200_OK)
 
-    def get_prev_exam_result(self, request, user_id):
+    def get_prev_exam_result(self, request, user_id, exam_id):
         user = User.objects.get(userid=user_id)
-        exam_results = ExamResult.objects.filter(user=user)
+        exam = Exam.objects.get(id=exam_id)
+        exam_results = ExamResult.objects.filter(user=user, exam=exam)
         if len(exam_results) != 0:
             return Response({"message": "Ok"}, status=status.HTTP_200_OK)
         else:
