@@ -39,7 +39,7 @@ class ProfileView(ViewSet):
         user = User.objects.get(userid=user_id)
         exam = Exam.objects.get(id=exam_id)
         exam_results = ExamResult.objects.filter(user=user, exam=exam)
-        if len(exam_results) != 0:
+        if len(exam_results) == 0:
             return Response({"message": "Ok"}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Bad"}, status=status.HTTP_200_OK)
