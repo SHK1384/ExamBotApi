@@ -41,7 +41,8 @@ class ExamResult(models.Model):
 class ExamBox(models.Model):
     id = models.AutoField(primary_key=True)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
-    time = models.DateTimeField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
     def __str__(self):
