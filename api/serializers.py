@@ -6,7 +6,9 @@ from api.models import ExamBox, Exam, Department, User
 class ExamResultSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
     exam_id = serializers.IntegerField()
-    answers = serializers.ListField(child=serializers.IntegerField())
+    correct_answer = serializers.IntegerField()
+    wrong_answer = serializers.IntegerField()
+    not_answered = serializers.IntegerField()
 
 class ExamSerializer(serializers.ModelSerializer):
     class Meta:
