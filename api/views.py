@@ -1,10 +1,12 @@
+from http.client import responses
+
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from .models import ExamBox, User, ExamResult, Exam
 
-from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer
+from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateSerializer
 
 
 # Create your views here.
@@ -13,6 +15,7 @@ class ProfileView(ViewSet):
     exam_box_serializer = ExamBoxSerializer
     exam_result_serializer = ExamResultSerializer
     user_serializer = UserSerializer
+    user_state_serializer = UserStateSerializer
 
     def get_exam_box_list(self, request, user_id):
         user = User.objects.get(userid=user_id)
@@ -43,3 +46,19 @@ class ProfileView(ViewSet):
             return Response({"message": "Ok"}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Bad"}, status=status.HTTP_200_OK)
+
+    def get_user_state(self, request, user_id):
+        user = User.objects.get(userid=user_id)
+        data = {'state': user.state, 'current_exam': user.current_exam}
+        serialized_output = self.user_state_serializer(data)
+        return Response(serialized_output.data, status=status.HTTP_200_OK)
+
+    def set_user_state(self, request):
+        serialized_output = self.user_state_serializer(data=request.data)
+        if serialized_output.is_valid(raise_exception=True):
+            user = User.objects.get(userid=serialized_output.data['user_id'])
+            exam = Exam.objects.get(id=serialized_output.data['current_exam'])
+            user.state = request.data['state']
+            user.current_exam = exam
+            user.save()
+            return Response({"message": "Done"}, status=status.HTTP_200_OK)

@@ -15,6 +15,11 @@ class ExamSerializer(serializers.ModelSerializer):
         model = Exam
         fields = '__all__'
 
+class UserStateSerializer(serializers.Serializer):
+    user_id = serializers.CharField()
+    state = serializers.CharField()
+    current_exam = serializers.IntegerField()
+
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department

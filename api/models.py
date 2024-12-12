@@ -9,15 +9,6 @@ class Department(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class User(models.Model):
-    id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    userid = models.CharField(max_length=50)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name} : {self.department}"
 
 
 class Exam(models.Model):
@@ -29,6 +20,18 @@ class Exam(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+class User(models.Model):
+    id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    userid = models.CharField(max_length=50)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
+    state = models.CharField(max_length=50)
+    current_exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} : {self.department}"
 
 class ExamResult(models.Model):
     id = models.AutoField(primary_key=True)
