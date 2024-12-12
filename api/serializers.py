@@ -16,7 +16,7 @@ class ExamSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserStateSerializer(serializers.Serializer):
-    user_id = serializers.CharField(allow_blank=True)
+    user_id = serializers.CharField()
     state = serializers.CharField()
     current_exam = serializers.IntegerField()
 
