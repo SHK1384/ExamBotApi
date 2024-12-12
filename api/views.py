@@ -52,7 +52,7 @@ class ProfileView(ViewSet):
 
     def get_user_state(self, request, user_id):
         user = User.objects.get(userid=user_id)
-        if user.current_exam is None:
+        if user.state == "None" or user.state == "" or user.current_exam is None:
             return Response({"state": "None"}, status=status.HTTP_200_OK)
         data = {'state': user.state, 'current_exam': user.current_exam}
         serialized_output = self.user_state_get_serializer(data)
@@ -62,8 +62,13 @@ class ProfileView(ViewSet):
         serialized_output = self.user_state_set_serializer(data=request.data)
         if serialized_output.is_valid(raise_exception=True):
             user = User.objects.get(userid=serialized_output.data['user_id'])
-            exam = Exam.objects.get(id=serialized_output.data['current_exam'])
-            user.state = request.data['state']
-            user.current_exam = exam
-            user.save()
+            if serialized_output.data['current_exam'] == -1:
+                user.state = "None"
+                user.current_exam = None
+                user.save()
+            else:
+                exam = Exam.objects.get(id=serialized_output.data['current_exam'])
+                user.state = request.data['state']
+                user.current_exam = exam
+                user.save()
             return Response({"message": "Done"}, status=status.HTTP_200_OK)
