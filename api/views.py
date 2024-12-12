@@ -1,4 +1,5 @@
 from http.client import responses
+from types import NoneType
 
 from django.shortcuts import render
 from rest_framework import status
@@ -49,6 +50,8 @@ class ProfileView(ViewSet):
 
     def get_user_state(self, request, user_id):
         user = User.objects.get(userid=user_id)
+        if user.current_exam is NoneType:
+            return Response({"state": "None"}, status=status.HTTP_200_OK)
         data = {'user_id': user_id, 'state': user.state, 'current_exam': user.current_exam.id}
         serialized_output = self.user_state_serializer(data)
         return Response(serialized_output.data, status=status.HTTP_200_OK)
