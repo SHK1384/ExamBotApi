@@ -15,10 +15,14 @@ class ExamSerializer(serializers.ModelSerializer):
         model = Exam
         fields = '__all__'
 
-class UserStateSerializer(serializers.Serializer):
+class UserStateSetSerializer(serializers.Serializer):
     user_id = serializers.CharField()
     state = serializers.CharField()
     current_exam = serializers.IntegerField()
+
+class UserStateGetSerializer(serializers.Serializer):
+    state = serializers.CharField()
+    current_exam = ExamSerializer()
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
