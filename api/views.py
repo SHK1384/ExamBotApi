@@ -12,6 +12,7 @@ from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSeriali
 
 
 # Create your views here.
+# testing something
 class ProfileView(ViewSet):
 
     exam_box_serializer = ExamBoxSerializer
