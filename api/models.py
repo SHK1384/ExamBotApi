@@ -27,6 +27,7 @@ class User(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
     state = models.CharField(max_length=50)
     current_exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
+    set_state_time = models.DateTimeField()
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} : {self.department}"

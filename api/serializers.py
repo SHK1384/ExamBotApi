@@ -22,10 +22,12 @@ class UserStateSetSerializer(serializers.Serializer):
     user_id = serializers.CharField()
     state = serializers.CharField()
     current_exam = serializers.IntegerField()
+    set_state_time = serializers.DateTimeField()
 
 class UserStateGetSerializer(serializers.Serializer):
     state = serializers.CharField()
     current_exam = ExamSerializer()
+    set_state_time = serializers.DateTimeField()
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
