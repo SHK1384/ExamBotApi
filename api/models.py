@@ -9,8 +9,6 @@ class Department(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-
-
 class Exam(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
@@ -37,6 +35,9 @@ class ExamResult(models.Model):
     id = models.AutoField(primary_key=True)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    answers = ArrayField(models.IntegerField())
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
     correct_answer = models.IntegerField()
     wrong_answer = models.IntegerField()
     not_answered = models.IntegerField()

@@ -33,7 +33,7 @@ class ProfileView(ViewSet):
             data = serialized_output.data
             user = User.objects.get(userid=data["user_id"])
             exam = Exam.objects.get(id=data["exam_id"])
-            exam_result = ExamResult.objects.create(user=user, exam=exam, correct_answer=data["correct_answer"], wrong_answer=data["wrong_answer"], not_answered=data["not_answered"])
+            exam_result = ExamResult.objects.create(user=user, exam=exam, answers=data["answers"], start_time=data["start_time"], finish_time=data["finish_time"], correct_answer=data["correct_answer"], wrong_answer=data["wrong_answer"], not_answered=data["not_answered"])
             exam_result.save()
             return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 
