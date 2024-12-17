@@ -22,7 +22,7 @@ class UserStateSetSerializer(serializers.Serializer):
     user_id = serializers.CharField()
     state = serializers.CharField()
     current_exam = serializers.IntegerField()
-    set_state_time = serializers.DateTimeField(allow_null=True, allow_blank=True)
+    set_state_time = serializers.DateTimeField(required=False)
 
 class UserStateGetSerializer(serializers.Serializer):
     state = serializers.CharField()
