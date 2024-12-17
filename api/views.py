@@ -38,6 +38,8 @@ class ProfileView(ViewSet):
             return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 
     def get_user_by_id(self, request, user_id):
+        if not User.objects.filter(userid=user_id).exists():
+            return Response({"message": "not found"}, status=status.HTTP_200_OK)
         user = User.objects.get(userid=user_id)
         serialized_output = self.user_serializer(user)
         return Response(serialized_output.data, status=status.HTTP_200_OK)
