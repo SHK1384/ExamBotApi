@@ -57,7 +57,7 @@ class ProfileView(ViewSet):
         user = User.objects.get(userid=user_id)
         if user.state == "None" or user.state == "" or user.current_exam is None:
             return Response({"state": "None"}, status=status.HTTP_200_OK)
-        data = {'state': user.state, 'current_exam': user.current_exam}
+        data = {'set_state_time': user.set_state_time ,'state': user.state, 'current_exam': user.current_exam}
         serialized_output = self.user_state_get_serializer(data)
         return Response(serialized_output.data, status=status.HTTP_200_OK)
 
