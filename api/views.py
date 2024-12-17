@@ -72,6 +72,7 @@ class ProfileView(ViewSet):
             else:
                 exam = Exam.objects.get(id=serialized_output.data['current_exam'])
                 user.state = serialized_output.data['state']
+                print(serialized_output['set_state_time'])
                 user.set_state_time = serialized_output['set_state_time']
                 user.current_exam = exam
                 user.save()
