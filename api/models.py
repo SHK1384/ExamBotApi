@@ -14,7 +14,8 @@ class Exam(models.Model):
     name = models.CharField(max_length=50)
     number_of_questions = models.IntegerField()
     file = models.FileField(upload_to='exam_files')
-    answers = ArrayField(models.IntegerField())
+    answers = ArrayField(models.IntegerField(), null=True)
+    answers_short_answer = ArrayField(models.CharField(), null=True)
     is_short_answer = models.BooleanField(default=False)
 
     def __str__(self):

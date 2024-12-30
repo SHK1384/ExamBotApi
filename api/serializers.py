@@ -14,6 +14,8 @@ class ExamResultSerializer(serializers.Serializer):
     not_answered = serializers.IntegerField()
 
 class ExamSerializer(serializers.ModelSerializer):
+    answers = serializers.ListField(child=serializers.IntegerField(), required=False)
+    answers_short_answer = serializers.ListField(child=serializers.CharField(), required=False)
     class Meta:
         model = Exam
         fields = '__all__'
