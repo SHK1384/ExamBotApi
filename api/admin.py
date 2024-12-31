@@ -4,7 +4,7 @@ from .models import User, Exam, ExamBox, ExamResult, Department
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
-    exclude = ["current_exam", "state"]
+    exclude = ["current_exam", "state", "set_state_time"]
 
 admin.site.register(Exam)
 admin.site.register(ExamBox)
