@@ -73,5 +73,6 @@ class ProfileView(ViewSet):
                 exam = Exam.objects.get(id=serialized_output.data['current_exam'])
                 user.state = serialized_output.data['state']
                 user.current_exam = exam
+                user.set_state_time = serialized_output.data['set_state_time']
                 user.save()
             return Response({"message": "Done"}, status=status.HTTP_200_OK)
