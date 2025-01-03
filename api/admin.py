@@ -13,10 +13,12 @@ class DepartmentListFilter(admin.SimpleListFilter):
         qs = model_admin.get_queryset(request).all()
         for exambox in qs:
             a.append((exambox.department.id, _(exambox.department.name)))
+        a.sort()
         return a
 
     def queryset(self, request, queryset):
-        return queryset.filter(department__id=self.value())
+        if self.value() is not None:
+            return queryset.filter(department__id=self.value())
 
 class UserAdmin(admin.ModelAdmin):
     exclude = ["current_exam", "state", "set_state_time"]
