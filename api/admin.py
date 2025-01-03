@@ -14,6 +14,7 @@ class DepartmentListFilter(admin.SimpleListFilter):
         for exambox in qs:
             a.append((exambox.department.id, _(exambox.department.name)))
         a.sort()
+        a = list(dict.fromkeys(a))
         return a
 
     def queryset(self, request, queryset):
