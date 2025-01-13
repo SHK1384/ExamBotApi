@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models.expressions import result
 from django.utils.translation import gettext_lazy as _
 
 from .models import User, Exam, ExamBox, ExamResult, Department
@@ -20,6 +21,24 @@ class DepartmentListFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value() is not None:
             return queryset.filter(department__id=self.value())
+
+
+class DepartmentResultListFilter(admin.SimpleListFilter):
+    title = _("Department")
+    parameter_name = 'department'
+
+    def lookups(self, request, model_admin):
+        a = []
+        qs = model_admin.get_queryset(request).all()
+        for examresult in qs:
+            a.append((examresult.user.department.id, _(examresult.user.department.name)))
+        a.sort()
+        a = list(dict.fromkeys(a))
+        return a
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(user__department__id=self.value())
 
 class ExamListFilter(admin.SimpleListFilter):
     title = _("Exam")
@@ -45,7 +64,7 @@ class ExamBoxAdmin(admin.ModelAdmin):
     list_filter = [DepartmentListFilter]
 
 class ExamResultAdmin(admin.ModelAdmin):
-    list_filter = [DepartmentListFilter, ExamListFilter]
+    list_filter = [DepartmentResultListFilter, ExamListFilter]
 
 admin.site.register(Exam)
 admin.site.register(ExamBox, ExamBoxAdmin)
