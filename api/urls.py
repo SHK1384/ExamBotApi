@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import ProfileView, result_view
+from api.views import ProfileView, result_view, exam_id
 
 get_exam_box_list = ProfileView.as_view({
     'get': 'get_exam_box_list'
@@ -32,4 +32,5 @@ urlpatterns = [
     path('get-user-state/<int:user_id>', get_user_state, name='get_user_state'),
     path('set-user-state/', set_user_state, name='set_user_state'),
     path('get-exam-result/<int:department_id>/<int:exam_id>', result_view, name='get_exam_result'),
+    path('get-exam-id/', exam_id, name='get_exam_id'),
 ]

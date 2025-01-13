@@ -15,11 +15,19 @@ from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSeriali
 # Create your views here.
 # testing something
 
+def exam_id(request):
+    exams = Exam.objects.all()
+    result = ""
+    for exam in exams:
+        result += exam.id + ": " + exam.name + "\n"
+    return HttpResponse(result)
+
+
 def result_view(request, department_id, exam_id):
     exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
-    result = Exam.objects.get(id=exam_id).name
+    result = Exam.objects.get(id=exam_id).name + "\n"
     for exam_result in exam_results:
-        result += exam_result.user.name + ": " + str(4*(exam_result.correct_answer*4-exam_result.wrong_answer)/(exam_result.correct_answer+exam_result.wrong_answer+exam_result.not_answered))
+        result += exam_result.user.first_name + " " + exam_result.user.last_name + ": " + str(4*(exam_result.correct_answer*4-exam_result.wrong_answer)/(exam_result.correct_answer+exam_result.wrong_answer+exam_result.not_answered)) + "\n"
     return HttpResponse(result)
 
 class ProfileView(ViewSet):
