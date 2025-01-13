@@ -1,6 +1,7 @@
 from http.client import responses
 from types import NoneType
 
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
@@ -13,6 +14,14 @@ from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSeriali
 
 # Create your views here.
 # testing something
+
+def result_view(request, department_id, exam_id):
+    exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
+    result = Exam.objects.get(id=exam_id).name
+    for exam_result in exam_results:
+        result += exam_result.user.name + ": " + str(4*(exam_result.correct_answer*4-exam_result.wrong_answer)/(exam_result.correct_answer+exam_result.wrong_answer+exam_result.not_answered))
+    return HttpResponse(result)
+
 class ProfileView(ViewSet):
 
     exam_box_serializer = ExamBoxSerializer
