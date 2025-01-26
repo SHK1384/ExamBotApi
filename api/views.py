@@ -1,3 +1,4 @@
+from datetime import datetime
 from http.client import responses
 from types import NoneType
 
@@ -6,10 +7,10 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-from .models import ExamBox, User, ExamResult, Exam
+from .models import ExamBox, User, ExamResult, Exam, Department
 
 from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateGetSerializer, \
-    UserStateSetSerializer
+    UserStateSetSerializer, UserRegisterSerializer
 
 
 # Create your views here.
@@ -53,6 +54,15 @@ class ProfileView(ViewSet):
     user_serializer = UserSerializer
     user_state_get_serializer = UserStateGetSerializer
     user_state_set_serializer = UserStateSetSerializer
+    user_register_serializer = UserRegisterSerializer
+
+    def register_new_user(self, request):
+        serializer_output = self.user_register_serializer(data=request.data)
+        if serializer_output.is_valid():
+            department = Department.objects.get(id=7)
+            new_user = User.objects.create(first_name=request.data['first_name'], last_name=request.data['last_name'], userid=request.data['userid'], department=department, state="None", set_state_time=datetime.now())
+            new_user.save()
+            return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 
     def get_exam_box_list(self, request, user_id):
         user = User.objects.get(userid=user_id)

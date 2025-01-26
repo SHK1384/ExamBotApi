@@ -2,6 +2,10 @@ from rest_framework import serializers
 
 from api.models import ExamBox, Exam, Department, User
 
+class UserRegisterSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    userid = serializers.CharField()
 
 class ExamResultSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
