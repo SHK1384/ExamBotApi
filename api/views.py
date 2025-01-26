@@ -59,7 +59,7 @@ class ProfileView(ViewSet):
 
     def register_new_user(self, request):
         serializer_output = self.user_register_serializer(data=request.data)
-        if serializer_output.is_valid():
+        if serializer_output.is_valid(raise_exception=True):
             department = Department.objects.get(id=11)
             new_user = User.objects.create(first_name=request.data['first_name'], last_name=request.data['last_name'], userid=request.data['userid'], department=department, state="None", set_state_time=datetime.now())
             new_user.save()
@@ -73,7 +73,7 @@ class ProfileView(ViewSet):
 
     def add_exam_result(self, request):
         serialized_output = self.exam_result_serializer(data=request.data)
-        if serialized_output.is_valid():
+        if serialized_output.is_valid(raise_exception=True):
             data = serialized_output.data
             user = User.objects.get(userid=data["user_id"])
             exam = Exam.objects.get(id=data["exam_id"])
