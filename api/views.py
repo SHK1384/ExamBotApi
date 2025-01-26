@@ -60,7 +60,7 @@ class ProfileView(ViewSet):
     def register_new_user(self, request):
         serializer_output = self.user_register_serializer(data=request.data)
         if serializer_output.is_valid():
-            department = Department.objects.get(id=7)
+            department = Department.objects.get(id=11)
             new_user = User.objects.create(first_name=request.data['first_name'], last_name=request.data['last_name'], userid=request.data['userid'], department=department, state="None", set_state_time=datetime.now())
             new_user.save()
             return Response({"message": "Done!"}, status=status.HTTP_200_OK)
