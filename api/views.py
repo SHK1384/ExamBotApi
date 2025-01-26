@@ -45,6 +45,7 @@ def result_view(request, department_id, exam_id):
         exam_result.not_answered = not_answered
         exam_result.save()
         result += exam_result.user.first_name + " " + exam_result.user.last_name + ": " + str(25*(exam_result.correct_answer*4-exam_result.wrong_answer)/(exam_result.correct_answer+exam_result.wrong_answer+exam_result.not_answered)) + "\n"
+        #important comments
     return HttpResponse(result)
 
 class ProfileView(ViewSet):
