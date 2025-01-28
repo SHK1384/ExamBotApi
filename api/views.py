@@ -25,7 +25,7 @@ def exam_id(request):
 
 
 def result_view(request, department_id, exam_id):
-    if department_id == 11:
+    if department_id != 11:
         exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
     else:
         exam_results = ExamResult.objects.filter(exam__id=exam_id)
