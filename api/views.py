@@ -25,7 +25,10 @@ def exam_id(request):
 
 
 def result_view(request, department_id, exam_id):
-    exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
+    if department_id == 11:
+        exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
+    else:
+        exam_results = ExamResult.objects.filter(exam__id=exam_id)
     result = Exam.objects.get(id=exam_id).name + "\n"
     exam_answer_sheet = Exam.objects.get(id=exam_id).answers
 
@@ -69,6 +72,9 @@ class ProfileView(ViewSet):
     user_state_get_serializer = UserStateGetSerializer
     user_state_set_serializer = UserStateSetSerializer
     user_register_serializer = UserRegisterSerializer
+
+    def get_all_users(self, request):
+        users = User.objects.all()
 
     def register_new_user(self, request):
         serializer_output = self.user_register_serializer(data=request.data)
