@@ -68,6 +68,7 @@ def result_view(request, department_id, exam_id):
             not_answered_questions[i]) + "\n"
     result += '\n\n\n'
     result += precent_raw
+    #what is happening
     return HttpResponse(result)
 
 class ProfileView(ViewSet):
