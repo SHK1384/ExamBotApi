@@ -28,6 +28,11 @@ def result_view(request, department_id, exam_id):
     exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
     result = Exam.objects.get(id=exam_id).name + "\n"
     exam_answer_sheet = Exam.objects.get(id=exam_id).answers
+
+    correct_questions = [0] * Exam.objects.get(id=exam_id).number_of_questions
+    wrong_questions = [0] * Exam.objects.get(id=exam_id).number_of_questions
+    not_answered_questions = [0] * Exam.objects.get(id=exam_id).number_of_questions
+
     for exam_result in exam_results:
         user_answer_sheet = exam_result.answers
         correct = 0
@@ -36,16 +41,23 @@ def result_view(request, department_id, exam_id):
         for i in range(len(user_answer_sheet)):
             if user_answer_sheet[i] == exam_answer_sheet[i]:
                 correct += 1
+                correct_questions[i] += 1
             elif 1 <= user_answer_sheet[i] <= 5:
                 wrong += 1
+                wrong_questions[i] += 1
             else:
                 not_answered += 1
+                not_answered_questions[i] += 1
+
         exam_result.correct_answer = correct
         exam_result.wrong_answer = wrong
         exam_result.not_answered = not_answered
         exam_result.save()
         result += exam_result.user.first_name + " " + exam_result.user.last_name + ": " + str(25*(exam_result.correct_answer*4-exam_result.wrong_answer)/(exam_result.correct_answer+exam_result.wrong_answer+exam_result.not_answered)) + "\n"
-        #important comments
+        result += '\n\n\n'
+        result += 'index correct wrong empty\n'
+        for i in range(len(user_answer_sheet)):
+            result += str(i+1) + str(correct_questions[i]) + str(wrong_questions[i]) + str(not_answered_questions[i]) + "\n"
     return HttpResponse(result)
 
 class ProfileView(ViewSet):
