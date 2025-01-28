@@ -54,10 +54,11 @@ def result_view(request, department_id, exam_id):
         exam_result.not_answered = not_answered
         exam_result.save()
         result += exam_result.user.first_name + " " + exam_result.user.last_name + ": " + str(25*(exam_result.correct_answer*4-exam_result.wrong_answer)/(exam_result.correct_answer+exam_result.wrong_answer+exam_result.not_answered)) + "\n"
-        result += '\n\n\n'
-        result += 'index correct wrong empty\n'
-        for i in range(len(user_answer_sheet)):
-            result += str(i+1) + str(correct_questions[i]) + str(wrong_questions[i]) + str(not_answered_questions[i]) + "\n"
+    result += '\n\n\n'
+    result += 'index correct wrong empty\n'
+    for i in range(len(correct_questions)):
+        result += str(i + 1) + " " + str(correct_questions[i]) + " " + str(wrong_questions[i]) + " " + str(
+            not_answered_questions[i]) + "\n"
     return HttpResponse(result)
 
 class ProfileView(ViewSet):
