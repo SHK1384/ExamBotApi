@@ -110,7 +110,7 @@ class ProfileView(ViewSet):
 
     def get_exam_box_list(self, request, user_id):
         user = User.objects.get(userid=user_id)
-        exam_box = ExamBox.objects.filter(department=user.department)
+        exam_box = ExamBox.objects.filter(department=user.department, exam__olympiad=user.olympiad)
         serialized_output = self.exam_box_serializer(exam_box, many=True)
         return Response(serialized_output.data, status=status.HTTP_200_OK)
 
