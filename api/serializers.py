@@ -1,12 +1,19 @@
+from django.template.backends.django import reraise
 from rest_framework import serializers
 
 from api.models import ExamBox, Exam, Department, User
 
 class UserRegisterSerializer(serializers.Serializer):
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    userid = serializers.CharField()
-    state = serializers.CharField()
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    userid = serializers.CharField(required=False)
+    state = serializers.CharField(required=False)
+    olympiad = serializers.CharField(required=False)
+
+    def validate_olympiad(self, value):
+        if value != 'Math' and value !='Chem' and value != 'Info':
+            raise serializers.ValidationError("Olympiad not found!")
+        return value
 
 class ExamResultSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()

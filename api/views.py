@@ -82,6 +82,23 @@ class ProfileView(ViewSet):
     def get_all_users(self, request):
         users = User.objects.all()
 
+    def update_new_user(self, request):
+        serializer_output = self.user_register_serializer(data=request.data)
+        if serializer_output.is_valid(raise_exception=True):
+            user = User.objects.get(userid=request.data['userid'])
+            data = serializer_output.data
+            if data.get("first_name", "none") != "none":
+                user.first_name = data["first_name"]
+            if data.get("last_name", "none") != "none":
+                user.last_name = data["last_name"]
+            if data.get("olympiad", "none") != "none":
+                user.olympiad = data["olympiad"]
+            if data.get("state", "none") != "none":
+                user.state = data["state"]
+                user.set_state_time = datetime.now()
+            user.save()
+            return Response({"message": "Done!"}, status=status.HTTP_200_OK)
+
     def register_new_user(self, request):
         serializer_output = self.user_register_serializer(data=request.data)
         if serializer_output.is_valid(raise_exception=True):

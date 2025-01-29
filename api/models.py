@@ -27,6 +27,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=50)
     userid = models.CharField(max_length=50)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
+    olympiad = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     current_exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
     set_state_time = models.DateTimeField()
