@@ -104,7 +104,7 @@ class ProfileView(ViewSet):
         if serializer_output.is_valid(raise_exception=True):
             department = Department.objects.get(id=11)
             data = serializer_output.data
-            new_user = User.objects.create(first_name=data['first_name'], last_name=data['last_name'], userid=data['userid'], department=department, state=data['state'], set_state_time=datetime.now())
+            new_user = User.objects.create(first_name="", last_name="", userid=data['userid'], department=department, state=data['state'], set_state_time=datetime.now())
             new_user.save()
             return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 
