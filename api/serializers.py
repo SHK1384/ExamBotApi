@@ -6,6 +6,7 @@ class UserRegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
     userid = serializers.CharField()
+    state = serializers.CharField()
 
 class ExamResultSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
