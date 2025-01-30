@@ -113,7 +113,8 @@ class ProfileView(ViewSet):
         if user.olympiad == "Math" or user.olympiad == "Info":
             exam_box = (ExamBox.objects.filter(department=user.department, exam__olympiad="Math") |
                         ExamBox.objects.filter(department=user.department, exam__olympiad="Info"))
-        exam_box = ExamBox.objects.filter(department=user.department, exam__olympiad=user.olympiad)
+        else:
+            exam_box = ExamBox.objects.filter(department=user.department, exam__olympiad=user.olympiad)
         serialized_output = self.exam_box_serializer(exam_box, many=True)
         return Response(serialized_output.data, status=status.HTTP_200_OK)
 
