@@ -31,7 +31,7 @@ class User(models.Model):
     olympiad = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     current_exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
-    set_state_time = models.DateTimeField()
+    set_state_time = models.DateTimeField(null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} : {self.department}"
