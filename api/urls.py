@@ -1,3 +1,5 @@
+from tkinter.font import names
+
 from django.urls import path
 from api.views import ProfileView, result_view, exam_id
 
@@ -30,6 +32,9 @@ register_new_user = ProfileView.as_view({
 update_new_user = ProfileView.as_view({
     'post': 'update_new_user'
 })
+get_all_users = ProfileView.as_view({
+    'get': 'get_all_users'
+})
 urlpatterns = [
     path('get-exam-box-list/<int:user_id>', get_exam_box_list, name='get_exam_box_list'),
     path('add-exam-result/', add_exam_result, name='add_exam_result'),
@@ -41,4 +46,5 @@ urlpatterns = [
     path('get-exam-id/', exam_id, name='get_exam_id'),
     path('register-new-user/', register_new_user, name='register_new_user'),
     path('update-new-user/', update_new_user, name='update_new_user'),
+    path('get-all-users/', get_all_users, name='get_all_users'),
 ]

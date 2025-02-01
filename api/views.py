@@ -81,6 +81,8 @@ class ProfileView(ViewSet):
 
     def get_all_users(self, request):
         users = User.objects.all()
+        serializer_output = self.user_serializer(users, many=True)
+        return Response(serializer_output.data, status=status.HTTP_200_OK)
 
     def update_new_user(self, request):
         serializer_output = self.user_register_serializer(data=request.data)
