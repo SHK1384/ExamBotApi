@@ -15,7 +15,6 @@ class Exam(models.Model):
     number_of_questions = models.IntegerField()
     file = models.FileField(upload_to='exam_files')
     answers = ArrayField(models.CharField(), null=True)
-    answers_short_answer = ArrayField(models.CharField(), null=True)
     olympiad = models.CharField(max_length=50)
     is_short_answer = models.BooleanField(default=False)
 
