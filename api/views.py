@@ -26,14 +26,13 @@ def exam_id(request):
 
 
 def result_view(request, department_id, exam_id):
-    exam_results = ExamResult.objects.all()
-    for exam_result in exam_results:
-        if exam_result.exam.is_short_answer:
-            exam_result.answers = exam_result.answers_short_answer
+    exams=Exam.objects.all()
+    for exam in exams:
+        if exam.is_short_answer:
+            exam.answers = exam.answers_short_answer
         else:
-            exam_result.answers_short_answer = exam_result.answers
-        exam_result.save()
-    return HttpResponse({"message": "Done"}, status=status.HTTP_200_OK)
+            exam.answers_short_answer = exam.answers
+    return Response({"message": "Done"}, status=status.HTTP_200_OK)
     # if department_id != 11:
     #     exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
     # else:
@@ -134,7 +133,7 @@ class ProfileView(ViewSet):
             data = serialized_output.data
             user = User.objects.get(userid=data["user_id"])
             exam = Exam.objects.get(id=data["exam_id"])
-            exam_result = ExamResult.objects.create(user=user, exam=exam, answers=data["answers"], answers_short_answer=data['answers_short_answer'], start_time=data["start_time"], finish_time=data["finish_time"], correct_answer=data["correct_answer"], wrong_answer=data["wrong_answer"], not_answered=data["not_answered"])
+            exam_result = ExamResult.objects.create(user=user, exam=exam, answers=data["answers"], start_time=data["start_time"], finish_time=data["finish_time"], correct_answer=data["correct_answer"], wrong_answer=data["wrong_answer"], not_answered=data["not_answered"])
             exam_result.save()
             return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 

@@ -19,7 +19,6 @@ class ExamResultSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
     exam_id = serializers.IntegerField()
     answers = serializers.ListField(child=serializers.IntegerField())
-    answers_short_answer = serializers.ListField(child=serializers.CharField())
     start_time = serializers.DateTimeField()
     finish_time = serializers.DateTimeField()
     correct_answer = serializers.IntegerField()
@@ -28,7 +27,6 @@ class ExamResultSerializer(serializers.Serializer):
 
 class ExamSerializer(serializers.ModelSerializer):
     answers = serializers.ListField(child=serializers.IntegerField(), required=False)
-    answers_short_answer = serializers.ListField(child=serializers.CharField(), required=False)
     class Meta:
         model = Exam
         fields = '__all__'

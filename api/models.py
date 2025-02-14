@@ -41,7 +41,6 @@ class ExamResult(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     answers = ArrayField(models.CharField(), null=True)
-    answers_short_answer = ArrayField(models.CharField(), null=True)
     start_time = models.DateTimeField()
     finish_time = models.DateTimeField()
     correct_answer = models.IntegerField()
