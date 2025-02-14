@@ -32,6 +32,7 @@ def result_view(request, department_id, exam_id):
             exam.answers = exam.answers_short_answer
         else:
             exam.answers_short_answer = exam.answers
+        exam.save()
     return Response({"message": "Done"}, status=status.HTTP_200_OK)
     # if department_id != 11:
     #     exam_results = ExamResult.objects.filter(exam__id=exam_id, user__department__id=department_id)
