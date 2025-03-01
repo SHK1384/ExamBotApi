@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.db.models import CharField
+
 
 # Create your models here.
 class Department(models.Model):
@@ -30,6 +32,7 @@ class User(models.Model):
     olympiad = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     current_exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
+    answers_state = models.TextField(default="")
     set_state_time = models.DateTimeField(null=True)
 
     def __str__(self):

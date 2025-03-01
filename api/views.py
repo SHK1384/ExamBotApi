@@ -11,7 +11,7 @@ from rest_framework.viewsets import ViewSet
 from .models import ExamBox, User, ExamResult, Exam, Department
 
 from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateGetSerializer, \
-    UserStateSetSerializer, UserRegisterSerializer
+    UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState
 
 
 # Create your views here.
@@ -78,6 +78,7 @@ class ProfileView(ViewSet):
     user_state_get_serializer = UserStateGetSerializer
     user_state_set_serializer = UserStateSetSerializer
     user_register_serializer = UserRegisterSerializer
+    set_user_answer_sheet = SetUserAnswerState
 
     def get_all_users(self, request):
         users = User.objects.all()
@@ -153,6 +154,14 @@ class ProfileView(ViewSet):
         data = {'set_state_time': user.set_state_time ,'state': user.state, 'current_exam': user.current_exam}
         serialized_output = self.user_state_get_serializer(data)
         return Response(serialized_output.data, status=status.HTTP_200_OK)
+
+    def set_user_answer_state(self, request):
+        serializer_output = self.set_user_answer_sheet(data=request.data)
+        if serializer_output.is_valid(raise_exception=True):
+            user = User.objects.get(userid=serializer_output.data["user_id"])
+            user.answers_state = serializer_output.data["answers_state"]
+            user.save()
+            return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
     def set_user_state(self, request):
         serialized_output = self.user_state_set_serializer(data=request.data)

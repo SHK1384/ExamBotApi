@@ -1,3 +1,4 @@
+from profile import Profile
 from tkinter.font import names
 
 from django.urls import path
@@ -35,6 +36,9 @@ update_new_user = ProfileView.as_view({
 get_all_users = ProfileView.as_view({
     'get': 'get_all_users'
 })
+set_user_answers_state = ProfileView.as_view({
+    'post': 'set_user_answer_state'
+})
 urlpatterns = [
     path('get-exam-box-list/<int:user_id>', get_exam_box_list, name='get_exam_box_list'),
     path('add-exam-result/', add_exam_result, name='add_exam_result'),
@@ -47,4 +51,5 @@ urlpatterns = [
     path('register-new-user/', register_new_user, name='register_new_user'),
     path('update-new-user/', update_new_user, name='update_new_user'),
     path('get-all-users/', get_all_users, name='get_all_users'),
+    path('set-user-answers-sheet', set_user_answers_state, name='set_user_answers_state'),
 ]

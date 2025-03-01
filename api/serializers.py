@@ -61,3 +61,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+class SetUserAnswerState(serializers.Serializer):
+    user_id = serializers.CharField()
+    answers_state = serializers.CharField()
