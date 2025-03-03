@@ -58,7 +58,7 @@ class ExamListFilter(admin.SimpleListFilter):
             return queryset.filter(exam__id=self.value())
 
 class UserAdmin(admin.ModelAdmin):
-    exclude = ["current_exam", "state", "set_state_time"]
+    exclude = ["current_exam", "state", "set_state_time", "answers_state"]
 
 class ExamBoxAdmin(admin.ModelAdmin):
     list_filter = [DepartmentListFilter]
