@@ -51,5 +51,5 @@ urlpatterns = [
     path('register-new-user/', register_new_user, name='register_new_user'),
     path('update-new-user/', update_new_user, name='update_new_user'),
     path('get-all-users/', get_all_users, name='get_all_users'),
-    path('set-user-answers-state', set_user_answers_state, name='set_user_answers_state'),
+    path('set-user-answers-state/', set_user_answers_state, name='set_user_answers_state'),
 ]
