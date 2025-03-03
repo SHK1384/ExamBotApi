@@ -57,7 +57,7 @@ class ExamBoxSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     department = DepartmentSerializer()
-    exam = ExamSerializer()
+    current_exam = ExamSerializer()
 
     class Meta:
         model = User
