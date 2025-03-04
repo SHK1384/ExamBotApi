@@ -39,6 +39,9 @@ get_all_users = ProfileView.as_view({
 set_user_answers_state = ProfileView.as_view({
     'post': 'set_user_answer_state'
 })
+set_user_current_message_id = ProfileView.as_view({
+    'post': 'set_current_message_id'
+})
 urlpatterns = [
     path('get-exam-box-list/<int:user_id>', get_exam_box_list, name='get_exam_box_list'),
     path('add-exam-result/', add_exam_result, name='add_exam_result'),
@@ -52,4 +55,5 @@ urlpatterns = [
     path('update-new-user/', update_new_user, name='update_new_user'),
     path('get-all-users/', get_all_users, name='get_all_users'),
     path('set-user-answers-state/', set_user_answers_state, name='set_user_answers_state'),
+    path('set-current-message-id/', set_user_current_message_id, name='set_user_current_message_id'),
 ]

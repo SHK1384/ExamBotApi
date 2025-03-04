@@ -3,6 +3,7 @@ from http.client import responses
 from itertools import permutations
 from types import NoneType
 
+from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import status
@@ -11,7 +12,7 @@ from rest_framework.viewsets import ViewSet
 from .models import ExamBox, User, ExamResult, Exam, Department
 
 from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateGetSerializer, \
-    UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState
+    UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState, SetUserCurrentMessageId
 
 
 # Create your views here.
@@ -79,6 +80,7 @@ class ProfileView(ViewSet):
     user_state_set_serializer = UserStateSetSerializer
     user_register_serializer = UserRegisterSerializer
     set_user_answer_sheet = SetUserAnswerState
+    set_user_current_message_id = SetUserCurrentMessageId
 
     def get_all_users(self, request):
         users = User.objects.all()
@@ -178,4 +180,12 @@ class ProfileView(ViewSet):
                 user.current_exam = exam
                 user.set_state_time = serialized_output.data['set_state_time']
                 user.save()
+            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+
+    def set_current_message_id(self, request):
+        serialized_output = self.set_user_current_message_id(data=request.data)
+        if serialized_output.is_valid(raise_exception=True):
+            user = User.objects.get(userid=serialized_output.data['user_id'])
+            user.current_message_id = serialized_output.data['current_message_id']
+            user.save()
             return Response({"message": "Done"}, status=status.HTTP_200_OK)

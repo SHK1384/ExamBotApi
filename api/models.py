@@ -33,6 +33,7 @@ class User(models.Model):
     state = models.CharField(max_length=50)
     current_exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
     answers_state = models.TextField(default="")
+    current_message_id = models.CharField(max_length=500, default="")
     set_state_time = models.DateTimeField(null=True)
 
     def __str__(self):

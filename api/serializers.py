@@ -66,3 +66,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SetUserAnswerState(serializers.Serializer):
     user_id = serializers.CharField()
     answers_state = serializers.CharField()
+
+class SetUserCurrentMessageId(serializers.Serializer):
+    user_id = serializers.CharField()
+    current_message_id = serializers.CharField()
