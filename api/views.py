@@ -168,6 +168,7 @@ class ProfileView(ViewSet):
         if serialized_output.is_valid(raise_exception=True):
             user = User.objects.get(userid=serialized_output.data['user_id'])
             if serialized_output.data['current_exam'] == -1:
+                user.answers_state = ""
                 user.state = "None"
                 user.current_exam = None
                 user.save()
