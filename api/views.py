@@ -191,7 +191,7 @@ class ProfileView(ViewSet):
             user.save()
             return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
-    def set_current_question(self, request):
+    def set_user_current_question(self, request):
         serialized_output = self.set_current_question(data=request.data)
         if serialized_output.is_valid(raise_exception=True):
             user = User.objects.get(userid=serialized_output.data['user_id'])
