@@ -12,7 +12,7 @@ from rest_framework.viewsets import ViewSet
 from .models import ExamBox, User, ExamResult, Exam, Department
 
 from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateGetSerializer, \
-    UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState, SetUserCurrentMessageId
+    UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState, SetUserCurrentMessageId, SetCurrentQuestion
 
 
 # Create your views here.
@@ -81,6 +81,7 @@ class ProfileView(ViewSet):
     user_register_serializer = UserRegisterSerializer
     set_user_answer_sheet = SetUserAnswerState
     set_user_current_message_id = SetUserCurrentMessageId
+    set_current_question = SetCurrentQuestion
 
     def get_all_users(self, request):
         users = User.objects.all()
@@ -187,5 +188,13 @@ class ProfileView(ViewSet):
         if serialized_output.is_valid(raise_exception=True):
             user = User.objects.get(userid=serialized_output.data['user_id'])
             user.current_message_id = serialized_output.data['current_message_id']
+            user.save()
+            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+
+    def set_current_question(self, request):
+        serialized_output = self.set_current_question(data=request.data)
+        if serialized_output.is_valid(raise_exception=True):
+            user = User.objects.get(userid=serialized_output.data['user_id'])
+            user.current_message_id = serialized_output.data['current_question']
             user.save()
             return Response({"message": "Done"}, status=status.HTTP_200_OK)

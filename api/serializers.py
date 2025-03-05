@@ -70,3 +70,7 @@ class SetUserAnswerState(serializers.Serializer):
 class SetUserCurrentMessageId(serializers.Serializer):
     user_id = serializers.CharField()
     current_message_id = serializers.CharField()
+
+class SetCurrentQuestion(serializers.Serializer):
+    user_id = serializers.CharField()
+    current_question = serializers.CharField()
