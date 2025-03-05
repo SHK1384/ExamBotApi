@@ -195,6 +195,6 @@ class ProfileView(ViewSet):
         serialized_output = self.set_current_question(data=request.data)
         if serialized_output.is_valid(raise_exception=True):
             user = User.objects.get(userid=serialized_output.data['user_id'])
-            user.current_message_id = serialized_output.data['current_question']
+            user.current_question = serialized_output.data['current_question']
             user.save()
             return Response({"message": "Done"}, status=status.HTTP_200_OK)
