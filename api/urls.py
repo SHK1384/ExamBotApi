@@ -45,6 +45,9 @@ set_user_current_message_id = ProfileView.as_view({
 set_user_current_question = ProfileView.as_view({
     'post': 'set_user_current_question'
 })
+set_current_exam_message_id = ProfileView.as_view({
+    'post': 'set_current_exam_message_id'
+})
 urlpatterns = [
     path('get-exam-box-list/<int:user_id>', get_exam_box_list, name='get_exam_box_list'),
     path('add-exam-result/', add_exam_result, name='add_exam_result'),
@@ -60,4 +63,5 @@ urlpatterns = [
     path('set-user-answers-state/', set_user_answers_state, name='set_user_answers_state'),
     path('set-current-message-id/', set_user_current_message_id, name='set_user_current_message_id'),
     path('set-current-question/', set_user_current_question, name='set_current_question'),
+    path('set-current-exam-message-id/', set_current_exam_message_id, name='set_current_exam_message_id'),
 ]
