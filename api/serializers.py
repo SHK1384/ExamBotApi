@@ -78,3 +78,7 @@ class SetCurrentQuestion(serializers.Serializer):
 class SetCurrentExamMessageId(serializers.Serializer):
     user_id = serializers.CharField()
     current_message_id = serializers.CharField()
+
+class SetCurrentPage(serializers.Serializer):
+    user_id = serializers.CharField()
+    current_page = serializers.IntegerField()

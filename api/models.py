@@ -36,6 +36,7 @@ class User(models.Model):
     current_question = models.CharField(max_length=100, default="")
     current_message_id = models.CharField(max_length=500, default="")
     current_exam_message_id = models.CharField(max_length=500, default="")
+    current_page = models.IntegerField(default=0)
     set_state_time = models.DateTimeField(null=True)
 
     def __str__(self):
