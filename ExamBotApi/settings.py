@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", default='django-insecure-as!k7@uhz^^%!)!rrvj7r^*d*f57rpo$1#mf2(q+mj8bxq_i@f')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", default=True)
+DEBUG = os.getenv("DEBUG", str(True)).lower() in ('true', '1', 'yes', 'on')
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default='*').split(",")
 CSRF_TRUSTED_ORIGINS = [
@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api'
+    'api',
+    'optical',
 ]
 
 MIDDLEWARE = [
