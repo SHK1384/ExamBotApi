@@ -1,9 +1,11 @@
 from datetime import datetime
 from http.client import responses
+from idlelib.pyparse import trans
 from itertools import permutations
 from types import NoneType
 
 from django.core.serializers import serialize
+from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import status
@@ -92,30 +94,32 @@ class ProfileView(ViewSet):
         return Response(serializer_output.data, status=status.HTTP_200_OK)
 
     def update_new_user(self, request):
-        serializer_output = self.user_register_serializer(data=request.data)
-        if serializer_output.is_valid(raise_exception=True):
-            user = User.objects.get(userid=request.data['userid'])
-            data = serializer_output.data
-            if data.get("first_name", "none") != "none":
-                user.first_name = data["first_name"]
-            if data.get("last_name", "none") != "none":
-                user.last_name = data["last_name"]
-            if data.get("olympiad", "none") != "none":
-                user.olympiad = data["olympiad"]
-            if data.get("state", "none") != "none":
-                user.state = data["state"]
-                user.set_state_time = datetime.now()
-            user.save()
-            return Response({"message": "Done!"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serializer_output = self.user_register_serializer(data=request.data)
+            if serializer_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=request.data['userid'])
+                data = serializer_output.data
+                if data.get("first_name", "none") != "none":
+                    user.first_name = data["first_name"]
+                if data.get("last_name", "none") != "none":
+                    user.last_name = data["last_name"]
+                if data.get("olympiad", "none") != "none":
+                    user.olympiad = data["olympiad"]
+                if data.get("state", "none") != "none":
+                    user.state = data["state"]
+                    user.set_state_time = datetime.now()
+                user.save()
+                return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 
     def register_new_user(self, request):
-        serializer_output = self.user_register_serializer(data=request.data)
-        if serializer_output.is_valid(raise_exception=True):
-            department = Department.objects.get(id=11)
-            data = serializer_output.data
-            new_user = User.objects.create(first_name="", last_name="", userid=data['userid'], department=department, state=data['state'], set_state_time=datetime.now())
-            new_user.save()
-            return Response({"message": "Done!"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serializer_output = self.user_register_serializer(data=request.data)
+            if serializer_output.is_valid(raise_exception=True):
+                department = Department.objects.get(id=11)
+                data = serializer_output.data
+                new_user = User.objects.create(first_name="", last_name="", userid=data['userid'], department=department, state=data['state'], set_state_time=datetime.now())
+                new_user.save()
+                return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 
     def get_exam_box_list(self, request, user_id):
         user = User.objects.get(userid=user_id)
@@ -128,14 +132,15 @@ class ProfileView(ViewSet):
         return Response(serialized_output.data, status=status.HTTP_200_OK)
 
     def add_exam_result(self, request):
-        serialized_output = self.exam_result_serializer(data=request.data)
-        if serialized_output.is_valid(raise_exception=True):
-            data = serialized_output.data
-            user = User.objects.get(userid=data["user_id"])
-            exam = Exam.objects.get(id=data["exam_id"])
-            exam_result = ExamResult.objects.create(user=user, exam=exam, answers=data["answers"], start_time=data["start_time"], finish_time=data["finish_time"], correct_answer=data["correct_answer"], wrong_answer=data["wrong_answer"], not_answered=data["not_answered"])
-            exam_result.save()
-            return Response({"message": "Done!"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serialized_output = self.exam_result_serializer(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                data = serialized_output.data
+                user = User.objects.get(userid=data["user_id"])
+                exam = Exam.objects.get(id=data["exam_id"])
+                exam_result = ExamResult.objects.create(user=user, exam=exam, answers=data["answers"], start_time=data["start_time"], finish_time=data["finish_time"], correct_answer=data["correct_answer"], wrong_answer=data["wrong_answer"], not_answered=data["not_answered"])
+                exam_result.save()
+                return Response({"message": "Done!"}, status=status.HTTP_200_OK)
 
     def get_user_by_id(self, request, user_id):
         if not User.objects.filter(userid=user_id).exists():
@@ -162,58 +167,64 @@ class ProfileView(ViewSet):
         return Response(serialized_output.data, status=status.HTTP_200_OK)
 
     def set_user_answer_state(self, request):
-        serializer_output = self.set_user_answer_sheet(data=request.data)
-        if serializer_output.is_valid(raise_exception=True):
-            user = User.objects.get(userid=serializer_output.data["user_id"])
-            user.answers_state = serializer_output.data["answers_state"]
-            user.save()
-            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serializer_output = self.set_user_answer_sheet(data=request.data)
+            if serializer_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=serializer_output.data["user_id"])
+                user.answers_state = serializer_output.data["answers_state"]
+                user.save()
+                return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
     def set_user_state(self, request):
-        serialized_output = self.user_state_set_serializer(data=request.data)
-        if serialized_output.is_valid(raise_exception=True):
-            user = User.objects.get(userid=serialized_output.data['user_id'])
-            if serialized_output.data['current_exam'] == -1:
-                user.answers_state = ""
-                user.state = "None"
-                user.current_exam = None
-                user.save()
-            else:
-                exam = Exam.objects.get(id=serialized_output.data['current_exam'])
-                user.state = serialized_output.data['state']
-                user.current_exam = exam
-                user.set_state_time = serialized_output.data['set_state_time']
-                user.save()
-            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serialized_output = self.user_state_set_serializer(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=serialized_output.data['user_id'])
+                if serialized_output.data['current_exam'] == -1:
+                    user.answers_state = ""
+                    user.state = "None"
+                    user.current_exam = None
+                    user.save()
+                else:
+                    exam = Exam.objects.get(id=serialized_output.data['current_exam'])
+                    user.state = serialized_output.data['state']
+                    user.current_exam = exam
+                    user.set_state_time = serialized_output.data['set_state_time']
+                    user.save()
+                return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
     def set_current_message_id(self, request):
-        serialized_output = self.set_user_current_message_id(data=request.data)
-        if serialized_output.is_valid(raise_exception=True):
-            user = User.objects.get(userid=serialized_output.data['user_id'])
-            user.current_message_id = serialized_output.data['current_message_id']
-            user.save()
-            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serialized_output = self.set_user_current_message_id(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=serialized_output.data['user_id'])
+                user.current_message_id = serialized_output.data['current_message_id']
+                user.save()
+                return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
     def set_user_current_question(self, request):
-        serialized_output = self.set_current_question(data=request.data)
-        if serialized_output.is_valid(raise_exception=True):
-            user = User.objects.get(userid=serialized_output.data['user_id'])
-            user.current_question = serialized_output.data['current_question']
-            user.save()
-            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serialized_output = self.set_current_question(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=serialized_output.data['user_id'])
+                user.current_question = serialized_output.data['current_question']
+                user.save()
+                return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
     def set_current_exam_message_id(self, request):
-        serialized_output = self.set_user_current_exam_message_id(data=request.data)
-        if serialized_output.is_valid(raise_exception=True):
-            user = User.objects.get(userid=serialized_output.data['user_id'])
-            user.current_exam_message_id = serialized_output.data['current_message_id']
-            user.save()
-            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serialized_output = self.set_user_current_exam_message_id(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=serialized_output.data['user_id'])
+                user.current_exam_message_id = serialized_output.data['current_message_id']
+                user.save()
+                return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
     def set_current_page(self, request):
-        serialized_output = self.set_user_current_page(data=request.data)
-        if serialized_output.is_valid(raise_exception=True):
-            user = User.objects.get(userid=serialized_output.data['user_id'])
-            user.current_page = serialized_output.data['current_page']
-            user.save()
-            return Response({"message": "Done"}, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            serialized_output = self.set_user_current_page(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=serialized_output.data['user_id'])
+                user.current_page = serialized_output.data['current_page']
+                user.save()
+                return Response({"message": "Done"}, status=status.HTTP_200_OK)
