@@ -31,7 +31,7 @@ def process_image(img_byte):
     cv2.drawContours(imgContours, rectCon, -1, (0, 255, 0), 1)
     # cv2.imshow("hi", imgContours)
     # cv2.waitKey(0)
-    if len(rectCon) < 7:
+    if len(rectCon) <= 7:
         return "Bad"
 
     answers = rectCon[2:8]
@@ -42,7 +42,6 @@ def process_image(img_byte):
 
     if cv2.contourArea(answers[0]) - cv2.contourArea(answers[-1]) >= 1500:
         return "Bad"
-
 
     answers_corner_points = []
 

@@ -1,113 +1,11 @@
-<!--
-{% csrf_token %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Upload</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .upload-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .upload-container h2 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-        .file-input {
-            display: none;
-        }
-        .upload-label {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .upload-label:hover {
-            background-color: #0056b3;
-        }
-        .preview {
-            margin-top: 15px;
-            max-width: 400px;
-            height: auto;
-            display: none;
-            border-radius: 5px;
-        }
-        .text-input {
-            width: 80%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .submit-btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .submit-btn:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-<body>
-    <div class="upload-container">
-        <h2>Upload an Image</h2>
-        <form id="uploadForm" action="/app/process/" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" id="fileInput" class="file-input" name="image" multiple accept="image/jpeg, image/jpg, image/png">
-            <label for="fileInput" class="upload-label">Choose Image</label>
-            <br>
-            <img id="imagePreview" class="preview">
-            <br>
-            <input type="text" name="key" class="text-input" placeholder="کلید را وارد کنید">
-            <br>
-            <button type="submit" class="submit-btn">Upload</button>
-        </form>
-    </div>
-    <script>
-        document.getElementById('fileInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
-</body>
-</html>
--->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Upload & Preview Images</title>
     <style>
         /* General Styles */
@@ -209,7 +107,7 @@
         {% if error %}
             <h1>Error</h1>
         {% endif %}
-        <h2>Upload, Preview & Select Object</h2>
+        <h2>آپلود عکس</h2>
 
         <form id="imageForm" action="/app/process/" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -226,20 +124,25 @@
 
             <!-- Text Field -->
             <div class="form-group">
-                <label for="description">Additional Info:</label>
-                <input type="text" id="description" name="key" placeholder="کلید را وارد کنید.">
+                <label for="description">کلید:</label>
+                <input type="text" id="description" name="key" placeholder="کلید را وارد کنید. فرمت: 1,2,3,4">
+            </div>
+        
+            <div class="form-group">
+                <label for="description">تعداد سوال</label>
+                <input type="text" id="description" name="count" placeholder="تعداد سوالات را وارد کنید.">
             </div>
 
             <!-- File Upload -->
             <div class="form-group">
-                <label for="imageInput">Upload Images:</label>
-                <input type="file" id="imageInput" name="images" multiple accept="image/*">
+                <label for="imageInput">اپلود عکس</label>
+                <input type="file" id="imageInput" name="images" multiple accept="image/*" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
             </div>
 
             <!-- Image Preview -->
             <div class="image-preview" id="previewContainer"></div>
 
-            <button type="submit">Submit</button>
+            <button type="submit">دریافت</button>
         </form>
     </div>
 
@@ -302,17 +205,6 @@
                 }
             {% endfor %}
         }
-        /*
-        function updateObjectDropdown(select, category) {
-            select.innerHTML = ""; // Clear previous options
-            categoryObjects[category].forEach(obj => {
-                const option = document.createElement("option");
-                option.value = obj;
-                option.textContent = obj;
-                select.appendChild(option);
-            });
-        }
-        */
     </script>
 
 </body>
