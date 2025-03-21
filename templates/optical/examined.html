@@ -72,38 +72,9 @@
 </head>
 <body>
     <div class="upload-container">
-        <h2>Upload an Image</h2>
-        <form id="uploadForm" action="/app/process/" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" id="fileInput" class="file-input" name="image" accept="image/jpeg, image/jpg, image/png">
-            <label for="fileInput" class="upload-label">Choose Image</label>
-            <br>
-            <img id="imagePreview" class="preview">
-            <br>
-            <input type="text" name="key" class="text-input" placeholder="کلید را وارد کنید">
-            <br>
-            <br>
-            <button type="submit" class="submit-btn">Upload</button>
-        </form>
-        
-        <h2>Correct Answers: <span id="correct-answers">{{ correct }}</span></h2>
-        <h2>Wrong Answers: <span id="wrong-answers">{{ wrong }}</span></h2>
-        <h2>Not Answered: <span id="not-answered">{{ not_answer }}</span></h2>
-        <h2>Percentage: <span id="percentage">{{ percent }}%</span></h2>
+        {% for student, percent in sp %}
+            <h3>{{ student }} - {{ percent }}</h3>
+        {% endfor %}
     </div>
-    <script>
-        document.getElementById('fileInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
 </body>
 </html>
