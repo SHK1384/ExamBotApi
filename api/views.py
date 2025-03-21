@@ -1,3 +1,4 @@
+from asyncio import eager_task_factory
 from datetime import datetime
 from http.client import responses
 from idlelib.pyparse import trans
@@ -7,11 +8,14 @@ from types import NoneType
 from django.core.serializers import serialize
 from django.db import transaction
 from django.http import HttpResponse
+from django.http.multipartparser import MultiPartParser
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.decorators import parser_classes
+from rest_framework.parsers import FormParser
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-from .models import ExamBox, User, ExamResult, Exam, Department
+from .models import ExamBox, User, ExamResult, Exam, Department, FileBox
 
 from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateGetSerializer, \
     UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState, SetUserCurrentMessageId, SetCurrentQuestion, \
@@ -228,3 +232,38 @@ class ProfileView(ViewSet):
                 user.current_page = serialized_output.data['current_page']
                 user.save()
                 return Response({"message": "Done"}, status=status.HTTP_200_OK)
+
+
+    @parser_classes([MultiPartParser, FormParser])
+    def create_filebox(self, request):
+        with transaction.atomic():
+            if 'file' not in request.FILES:
+                return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+            file = request.FILES['file']
+            user_id = request.data['user_id']
+            examid = request.data['exam_id']
+            question = request.data['question']
+
+            user = User.objects.get(userid=user_id)
+            exam = Exam.objects.get(id=examid)
+            file_box = FileBox(file=file, user=user, exam=exam, question=question)
+            file_box.save()
+
+            return Response({'message': 'File uploaded successfully'}, status=status.HTTP_201_CREATED)
+
+    def create_exam_result_long(self, request):
+        with transaction.atomic():
+            if not request.data.get('user_id') or  not request.data.get('exam_id'):
+                return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+            user_id = request.data['user_id']
+            examid = request.data['exam_id']
+
+            user = User.objects.get(userid=user_id)
+            exam = Exam.objects.get(id=examid)
+
+            exam_result = ExamResult(user=user, exam=exam)
+            exam_result.save()
+
+            return Response({'message': 'Done!'}, status=status.HTTP_200_OK)

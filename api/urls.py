@@ -51,6 +51,12 @@ set_current_exam_message_id = ProfileView.as_view({
 set_current_page = ProfileView.as_view({
     'post': 'set_current_page'
 })
+create_filebox = ProfileView.as_view({
+    'post': 'create_filebox'
+})
+create_exam_result_long = ProfileView.as_view({
+    'post': 'create_exam_result_long'
+})
 urlpatterns = [
     path('get-exam-box-list/<int:user_id>', get_exam_box_list, name='get_exam_box_list'),
     path('add-exam-result/', add_exam_result, name='add_exam_result'),
@@ -68,4 +74,6 @@ urlpatterns = [
     path('set-current-question/', set_user_current_question, name='set_current_question'),
     path('set-current-exam-message-id/', set_current_exam_message_id, name='set_current_exam_message_id'),
     path('set-current-page/', set_current_page, name='set_current_page'),
+    path('create-filebox/', create_filebox, name='create_filebox'),
+    path('create-exam-result-long/', create_exam_result_long, name='create_exam_result_long'),
 ]

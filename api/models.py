@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from django.db.models import CharField
+from django.db.models import CharField, ForeignKey
 
 
 # Create your models here.
@@ -66,3 +66,26 @@ class ExamBox(models.Model):
 
     def __str__(self):
         return f"{self.department} - {self.exam}"
+
+
+class FileBox(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = ForeignKey(User, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    question = models.CharField(max_length=50)
+    advice = models.TextField(default="")
+    score = models.IntegerField(default=0)
+    file = models.FileField(upload_to='user_files')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} : {self.exam} - {self.question}"
+
+class ExamResultLong(models.Model):
+    id = models.AutoField(primary_key=True)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fileboxes = models.ManyToManyField(FileBox)
+
+    def __str__(self):
+        return f"{self.user} - {self.exam}"

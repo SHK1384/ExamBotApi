@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.db.models.expressions import result
 from django.utils.translation import gettext_lazy as _
 
-from .models import User, Exam, ExamBox, ExamResult, Department
+from .models import User, Exam, ExamBox, ExamResult, Department, FileBox, ExamResultLong
+
 
 # Register your models here.
 class DepartmentListFilter(admin.SimpleListFilter):
@@ -71,3 +72,5 @@ admin.site.register(ExamBox, ExamBoxAdmin)
 admin.site.register(ExamResult, ExamResultAdmin)
 admin.site.register(Department)
 admin.site.register(User, UserAdmin)
+admin.site.register(FileBox)
+admin.site.register(ExamResultLong)
