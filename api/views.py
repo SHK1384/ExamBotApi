@@ -15,7 +15,7 @@ from rest_framework.decorators import parser_classes
 from rest_framework.parsers import FormParser
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-from .models import ExamBox, User, ExamResult, Exam, Department, FileBox
+from .models import ExamBox, User, ExamResult, Exam, Department, FileBox, ExamResultLong
 
 from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateGetSerializer, \
     UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState, SetUserCurrentMessageId, SetCurrentQuestion, \
@@ -261,9 +261,9 @@ class ProfileView(ViewSet):
             examid = request.data['exam_id']
 
             user = User.objects.get(userid=user_id)
-            exam = Exam.objects.get(id=examid)
+            exam = Exam.objects.get(id=int(examid))
 
-            exam_result = ExamResult(user=user, exam=exam)
+            exam_result = ExamResultLong(user=user, exam=exam)
             exam_result.save()
 
             return Response({'message': 'Done!'}, status=status.HTTP_200_OK)
