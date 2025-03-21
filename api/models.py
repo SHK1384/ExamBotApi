@@ -19,6 +19,7 @@ class Exam(models.Model):
     answers = ArrayField(models.CharField(), null=True)
     olympiad = models.CharField(max_length=50)
     is_short_answer = models.BooleanField(default=False)
+    is_long_answer = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name}"
