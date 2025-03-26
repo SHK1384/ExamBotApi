@@ -1,80 +1,118 @@
-{% csrf_token %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Upload</title>
+    <title>Responsive Table</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        }
+
+        body {
             background-color: #f4f4f4;
-        }
-        .upload-container {
-            background: white;
             padding: 20px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
             border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .upload-container h2 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-        .file-input {
-            display: none;
-        }
-        .upload-label {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .upload-label:hover {
-            background-color: #0056b3;
-        }
-        .preview {
-            margin-top: 15px;
-            max-width: 400px;
-            height: auto;
-            display: none;
-            border-radius: 5px;
-        }
-        .text-input {
-            width: 80%;
+            background: white;
             padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .submit-btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #28a745;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        thead {
+            background: #007BFF;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
         }
-        .submit-btn:hover {
-            background-color: #218838;
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e2e6ea;
+        }
+
+        @media (max-width: 600px) {
+            table {
+                border: 0;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                padding: 10px;
+                border-radius: 8px;
+                background: white;
+            }
+
+            td {
+                display: block;
+                text-align: right;
+                font-size: 14px;
+                padding: 8px;
+                position: relative;
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                text-align: left;
+                font-weight: bold;
+                color: #007BFF;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="upload-container">
-        {% for student, percent in sp %}
-            <h3>{{ student }} : {{ percent }}</h3>
-        {% endfor %}
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>درصد</th>
+                    <th>درست</th>
+                    <th>غلط</th>
+                    <th>نزده</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student, percent, correct, wrong, not_answered in sp %}
+                    <tr>
+                        <td data-label="Name">{{ student }}</td>
+                        <td data-label="percent">{{ percent }}%</td>
+                        <td data-label="correct">{{ correct }}</td>
+                        <td data-label="wrong">{{ wrong }}</td>
+                        <td data-label="not_answered">{{ not_answered }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+
 </body>
 </html>

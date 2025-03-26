@@ -28,6 +28,9 @@ def processing(request):
             return render(request, 'optical/index.html', context={'departments': departments, 'students': students})
         lists = []
         students = []
+        wrongs = []
+        corrects = []
+        not_answereds = []
         cnt = 0
         for image in image_file:
             image_bytes = image.read()
@@ -36,32 +39,52 @@ def processing(request):
             except Exception as e:
                 print(e)
                 lists.append("عکس نامطلوب")
+                corrects.append(0)
+                wrongs.append(0)
+                not_answereds.append(0)
+                student = User.objects.get(id=int(request.POST.get(f'object_{cnt}')))
+                students.append(student.first_name + ' ' + student.last_name)
+                cnt += 1
                 continue
 
             if resp == "Bad":
                 lists.append("عکس نامطلوب")
+                corrects.append(0)
+                wrongs.append(0)
+                not_answereds.append(0)
+                student = User.objects.get(id=int(request.POST.get(f'object_{cnt}')))
+                students.append(student.first_name + ' ' + student.last_name)
+                cnt += 1
                 continue
             wrong = 0
             correct = 0
             not_answer = 0
+            image_falty = False
             for i in range(len(key)):
                 if resp[i].count(1) > 1:
                     lists.append("عکس نامطلوب")
-                    continue
+                    image_falty = True
+                    break
                 if resp[i].count(1) == 0:
                     not_answer += 1
                 elif resp[i].index(1) == int(key[i])-1:
                     correct += 1
                 else:
                     wrong += 1
-            percent = ((correct*4-wrong)*100)/(len(key)*4)
-            lists.append(round(percent, 2))
+            if not image_falty:
+                corrects.append(correct)
+                wrongs.append(wrong)
+                not_answereds.append(not_answer)
+                percent = ((correct*4-wrong)*100)/(len(key)*4)
+                lists.append(round(percent, 2))
+            else:
+                corrects.append(0)
+                wrongs.append(0)
+                not_answereds.append(0)
             student = User.objects.get(id=int(request.POST.get(f'object_{cnt}')))
             students.append(student.first_name + ' ' + student.last_name)
             cnt += 1
-        print(lists)
-        print(students)
-        return render(request, 'optical/examined.html', {'sp': zip(students, lists)})
+        return render(request, 'optical/examined.html', {'sp': zip(students, lists, corrects, wrongs, not_answereds)})
     elif request.method == 'POST':
         departments = Department.objects.all()
         students = User.objects.all().exclude(department__id=11)
