@@ -127,13 +127,13 @@ STORAGES = {
         "OPTIONS": {
             "bucket_name": "default"
         }
-    }
+    },
     "staticfiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
             "bucket_name": "static"
         }
-    }
+    },
     "mediafiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
