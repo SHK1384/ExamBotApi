@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload PDF Files</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            direction: rtl;
+        }
+
+        form {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 300px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        input[type="file"] {
+            border: 1px solid #ccc;
+            padding: 6px;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <label for="file1">سوال اول</label>
+        <input type="file" name="file1" id="file1" accept="application/pdf" required>
+    </div>
+    <div>
+        <label for="file2">سوال دوم</label>
+        <input type="file" name="file2" id="file2" accept="application/pdf" required>
+    </div>
+    <div>
+        <label for="file3">سوال سوم</label>
+        <input type="file" name="file3" id="file3" accept="application/pdf" required>
+    </div>
+    <div>
+        <label for="file4">سوال چهارم</label>
+        <input type="file" name="file4" id="file4" accept="application/pdf" required>
+    </div>
+    <button type="submit">ارسال پاسخ</button>
+</form>
+
+</body>
+</html>
