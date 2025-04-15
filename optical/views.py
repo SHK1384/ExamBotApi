@@ -1,10 +1,11 @@
 from operator import index
 from warnings import catch_warnings
 
+from django.db import transaction
 from django.shortcuts import render
 from django.views.decorators.cache import never_cache, cache_control
 
-from api.models import Department, User
+from api.models import Department, User, FileBox, Exam
 from .script import process_image
 
 @never_cache
@@ -92,3 +93,29 @@ def processing(request):
     departments = Department.objects.all()
     students = User.objects.all().exclude(department__id=11)
     return render(request, 'optical/index.html', context={'departments': departments, 'students': students})
+
+def success(request):
+    return render(request, 'optical/success.html')
+
+def add_tashrihi(request, userid):
+    if request.method == 'POST':
+        with transaction.atomic():
+            print("POST")
+            user = User.objects.get(userid=userid)
+            file1 = request.FILES.get('file1')
+            file2 = request.FILES.get('file2')
+            file3 = request.FILES.get('file3')
+            file4 = request.FILES.get('file4')
+
+            exam = Exam.objects.get(id=46)
+            filebox1 = FileBox(user=user, exam=exam, question=1, file=file1)
+            filebox2 = FileBox(user=user, exam=exam, question=2, file=file2)
+            filebox3 = FileBox(user=user, exam=exam, question=3, file=file3)
+            filebox4 = FileBox(user=user, exam=exam, question=4, file=file4)
+
+            filebox1.save()
+            filebox2.save()
+            filebox3.save()
+            filebox4.save()
+        return render(request, 'optical/success.html')
+    return render(request, 'optical/tashrihi.html')
