@@ -112,38 +112,42 @@ def add_tashrihi(request, userid):
             file4 = request.FILES.get('file4')
 
             exam = Exam.objects.get(id=46)
-            if not FileBox.objects.filter(user=user, question=1).exists():
-                filebox1 = FileBox(user=user, exam=exam, question=1, file=file1)
-                filebox1.save()
-            else:
-                filebox1 = FileBox.objects.get(user=user, question=1)
-                filebox1.file = file1
-                filebox1.save()
+            if request.FILES.get('file1', default="-") != "-":
+                if not FileBox.objects.filter(user=user, question=1).exists():
+                    filebox1 = FileBox(user=user, exam=exam, question=1, file=file1)
+                    filebox1.save()
+                else:
+                    filebox1 = FileBox.objects.get(user=user, question=1)
+                    filebox1.file = file1
+                    filebox1.save()
 
-            if not FileBox.objects.filter(user=user, question=2).exists():
-                filebox2 = FileBox(user=user, exam=exam, question=2, file=file2)
-                filebox2.save()
-            else:
-                filebox2 = FileBox.objects.get(user=user, question=2)
-                filebox2.file = file2
-                filebox2.save()
+            if request.FILES.get('file2', default="-") != "-":
+                if not FileBox.objects.filter(user=user, question=2).exists():
+                    filebox2 = FileBox(user=user, exam=exam, question=2, file=file2)
+                    filebox2.save()
+                else:
+                    filebox2 = FileBox.objects.get(user=user, question=2)
+                    filebox2.file = file2
+                    filebox2.save()
 
-            if not FileBox.objects.filter(user=user, question=3).exists():
-                filebox3 = FileBox(user=user, exam=exam, question=3, file=file3)
-                filebox3.save()
-            else:
-                filebox3 = FileBox.objects.get(user=user, question=3)
-                filebox3.file = file3
-                filebox3.save()
+            if request.FILES.get('file3', default="-") != "-":
+                if not FileBox.objects.filter(user=user, question=3).exists():
+                    filebox3 = FileBox(user=user, exam=exam, question=3, file=file3)
+                    filebox3.save()
+                else:
+                    filebox3 = FileBox.objects.get(user=user, question=3)
+                    filebox3.file = file3
+                    filebox3.save()
 
 
-            if not FileBox.objects.filter(user=user, question=4).exists():
-                filebox4 = FileBox(user=user, exam=exam, question=4, file=file4)
-                filebox4.save()
-            else:
-                filebox4 = FileBox.objects.get(user=user, question=4)
-                filebox4.file = file3
-                filebox4.save()
+            if request.FILES.get('file4', default="-") != "-":
+                if not FileBox.objects.filter(user=user, question=4).exists():
+                    filebox4 = FileBox(user=user, exam=exam, question=4, file=file4)
+                    filebox4.save()
+                else:
+                    filebox4 = FileBox.objects.get(user=user, question=4)
+                    filebox4.file = file3
+                    filebox4.save()
 
         return render(request, 'optical/success.html')
     return render(request, 'optical/tashrihi.html')
