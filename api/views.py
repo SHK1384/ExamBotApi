@@ -245,6 +245,7 @@ class ProfileView(ViewSet):
             examid = request.data['exam_id']
             question = request.data['question']
 
+            print(file, user_id, examid, question)
             user = User.objects.get(userid=user_id)
             exam = Exam.objects.get(id=examid)
             file_box = FileBox(file=file, user=user, exam=exam, question=question)
