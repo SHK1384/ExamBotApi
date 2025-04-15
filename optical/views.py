@@ -100,7 +100,7 @@ def success(request):
     return render(request, 'optical/success.html')
 
 def add_tashrihi(request, userid):
-    if not User.objects.filter(userid=userid).exists().exists():
+    if not User.objects.filter(userid=userid).exists():
         return HttpResponse(HTTP_404_NOT_FOUND)
     if request.method == 'POST':
         with transaction.atomic():
