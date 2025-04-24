@@ -52,7 +52,7 @@ def result_view(request, department_id, exam_id):
             not_answered = 0
             wrong = 0
             for i in range(len(user_answer_sheet)):
-                if user_answer_sheet[i] == exam_answer_sheet[i]:
+                if str(user_answer_sheet[i]) == str(exam_answer_sheet[i]):
                     correct += 1
                     correct_questions[i] += 1
                 elif 1 <= user_answer_sheet[i] <= 5:
