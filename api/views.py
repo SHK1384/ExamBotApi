@@ -55,7 +55,7 @@ def result_view(request, department_id, exam_id):
                 if str(user_answer_sheet[i]) == str(exam_answer_sheet[i]):
                     correct += 1
                     correct_questions[i] += 1
-                elif 1 <= user_answer_sheet[i] <= 5:
+                elif 1 <= int(user_answer_sheet[i]) <= 5:
                     wrong += 1
                     wrong_questions[i] += 1
                 else:
