@@ -1,6 +1,3 @@
-from profile import Profile
-from tkinter.font import names
-
 from django.urls import path
 from api.views import ProfileView, result_view, exam_id
 

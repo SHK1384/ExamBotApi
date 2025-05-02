@@ -84,23 +84,23 @@ WSGI_APPLICATION = 'ExamBotApi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'exambot',
-#         'USER': 'postgres',
-#         'PASSWORD': 'shk1384',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'exambot',
+        'USER': 'postgres',
+        'PASSWORD': 'shk1384',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 DB = os.getenv("DB", default="sqlite")
 if DB == 'postgres':
     DATABASES = {
