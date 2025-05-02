@@ -91,7 +91,7 @@ class ProfileView(ViewSet):
     set_current_question = SetCurrentQuestion
     set_user_current_exam_message_id = SetCurrentExamMessageId
     set_user_current_page = SetCurrentPage
-    set_message_vip_id = SetCurrentVipMessageId
+    set_message_vip_id_serializer = SetCurrentVipMessageId
 
     def get_all_users(self, request):
         users = User.objects.all()
@@ -273,7 +273,7 @@ class ProfileView(ViewSet):
 
     def set_message_vip_id(self, request):
         with transaction.atomic():
-            serialized_output = self.set_message_vip_id(data=request.data)
+            serialized_output = self.set_message_vip_id_serializer(data=request.data)
             if serialized_output.is_valid(raise_exception=True):
                 user = User.objects.select_for_update().get(userid=serialized_output.data['user_id'])
                 user.current_vip_message_id = serialized_output.data['current_vip_message_id']
