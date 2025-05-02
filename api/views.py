@@ -1,7 +1,6 @@
 from asyncio import eager_task_factory
 from datetime import datetime
 from http.client import responses
-from idlelib.pyparse import trans
 from itertools import permutations
 from types import NoneType
 
@@ -10,6 +9,7 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.http.multipartparser import MultiPartParser
 from django.shortcuts import render
+from django.utils.translation.trans_real import translation
 from rest_framework import status
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import FormParser
@@ -17,9 +17,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from .models import ExamBox, User, ExamResult, Exam, Department, FileBox, ExamResultLong
 
-from api.serializers import ExamBoxSerializer, ExamResultSerializer, UserSerializer, UserStateGetSerializer, \
+from api.serializers import ExamBoxSerializer, ExamResultSerializer, SetCurrentVipMessageId, UserSerializer, UserStateGetSerializer, \
     UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState, SetUserCurrentMessageId, SetCurrentQuestion, \
-    SetCurrentExamMessageId, SetCurrentPage
+    SetCurrentExamMessageId, SetCurrentPage, SetCurrentVipMessageId
 
 
 # Create your views here.
@@ -91,6 +91,7 @@ class ProfileView(ViewSet):
     set_current_question = SetCurrentQuestion
     set_user_current_exam_message_id = SetCurrentExamMessageId
     set_user_current_page = SetCurrentPage
+    set_message_vip_id = SetCurrentVipMessageId
 
     def get_all_users(self, request):
         users = User.objects.all()
@@ -269,3 +270,13 @@ class ProfileView(ViewSet):
             exam_result.save()
 
             return Response({'message': 'Done!'}, status=status.HTTP_200_OK)
+
+    def set_message_vip_id(self, request):
+        with transaction.atomic():
+            serialized_output = self.set_message_vip_id(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                user = User.objects.select_for_update().get(userid=serialized_output.data['user_id'])
+                user.current_vip_message_id = serialized_output.data['current_vip_message_id']
+                user.save()
+                return Response({"message": "Done"}, status=status.HTTP_200_OK)
+

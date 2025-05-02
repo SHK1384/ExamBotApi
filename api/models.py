@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.db.models import CharField, ForeignKey
@@ -36,6 +37,7 @@ class User(models.Model):
     answers_state = models.TextField(default="")
     current_question = models.CharField(max_length=100, default="")
     current_message_id = models.CharField(max_length=500, default="")
+    current_vip_message_id = models.CharField(max_length=500, default="")
     current_exam_message_id = models.CharField(max_length=500, default="")
     current_page = models.IntegerField(default=0)
     set_state_time = models.DateTimeField(null=True)
