@@ -22,13 +22,14 @@ from django.views.static import serve
 from ExamBotApi import settings
 
 static_urlpatterns = [
-    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT})
+    re_path(r"^static/(?P<path>.*)$", serve,
+            {"document_root": settings.STATIC_ROOT})
 ]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include("api.urls")),
     path('app/', include("optical.urls")),
+    path('messaging/', include("messaging.urls")),
     path("", include(static_urlpatterns)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

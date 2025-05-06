@@ -23,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY", default='django-insecure-as!k7@uhz^^%!)!rrvj7r^*d*f57rpo$1#mf2(q+mj8bxq_i@f')
+SECRET_KEY = os.getenv(
+    "SECRET_KEY", default='django-insecure-as!k7@uhz^^%!)!rrvj7r^*d*f57rpo$1#mf2(q+mj8bxq_i@f')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", str(True)).lower() in ('true', '1', 'yes', 'on')
@@ -46,7 +47,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'optical',
-    'storages'
+    'storages',
+    'messaging',
 ]
 
 MIDDLEWARE = [
@@ -64,8 +66,7 @@ ROOT_URLCONF = 'ExamBotApi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
