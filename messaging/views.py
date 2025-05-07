@@ -18,7 +18,8 @@ class MessagingView(ViewSet):
     def set_message_sent_bool(self, request):
         serialized_output = UpdateMessageSentBoolSerializer(data=request.data)
         if serialized_output.is_valid(raise_exception=True):
-            message = Message.objects.get(pk=serialized_output['message_id'])
+            message = Message.objects.get(
+                pk=serialized_output.data['message_id'])
             message.is_sent = True
             message.save()
             return Response({'message': 'Done!'}, status=status.HTTP_200_OK)
