@@ -49,6 +49,7 @@ class User(models.Model):
         return f"{self.first_name} {self.last_name} : {self.department}"
 
 class ReportInterval(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     interval_minutes = models.IntegerField()
     time_field = models.CharField(max_length=50)
