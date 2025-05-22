@@ -287,6 +287,6 @@ class ProfileView(ViewSet):
             serialized_output = self.create_interval_report_serializer(data=request.data)
             if serialized_output.is_valid(raise_exception=True):
                 user = User.objects.get(userid=request.data['user_id'])
-                report_interval = ReportInterval(user=request.user, interval_minutes=serialized_output.data['interval_minutes'], time_field=serialized_output.data['time_field'])
+                report_interval = ReportInterval(user=user, interval_minutes=serialized_output.data['interval_minutes'], time_field=serialized_output.data['time_field'])
                 report_interval.save()
                 return Respone({"message": "Done"}, status=status.HTTP_201_CREATED)
