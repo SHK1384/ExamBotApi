@@ -57,6 +57,9 @@ create_exam_result_long = ProfileView.as_view({
 set_message_vip_id = ProfileView.as_view({
     'post': 'set_message_vip_id'
 })
+create_report_interval = ProfileView.as_view({
+    'post': 'create_report_interval'
+})
 urlpatterns = [
     path('get-exam-box-list/<int:user_id>', get_exam_box_list, name='get_exam_box_list'),
     path('add-exam-result/', add_exam_result, name='add_exam_result'),
@@ -77,4 +80,5 @@ urlpatterns = [
     path('create-filebox/', create_filebox, name='create_filebox'),
     path('create-exam-result-long/', create_exam_result_long, name='create_exam_result_long'),
     path('set-message-vip-id/', set_message_vip_id, name='set_message_vip_id'),
+    path('create-reprot-interval/', create_report_interval, name='create_report_interval'),
 ]
