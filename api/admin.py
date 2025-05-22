@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db.models.expressions import result
 from django.utils.translation import gettext_lazy as _
 
-from .models import User, Exam, ExamBox, ExamResult, Department, FileBox, ExamResultLong
+from .models import User, Exam, ExamBox, ExamResult, Department, FileBox, ExamResultLong, ReportInterval
 
 
 # Register your models here.
@@ -67,6 +67,7 @@ class ExamBoxAdmin(admin.ModelAdmin):
 class ExamResultAdmin(admin.ModelAdmin):
     list_filter = [DepartmentResultListFilter, ExamListFilter]
 
+admin.site.register(ReportInterval)
 admin.site.register(Exam)
 admin.site.register(ExamBox, ExamBoxAdmin)
 admin.site.register(ExamResult, ExamResultAdmin)

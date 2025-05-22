@@ -1,5 +1,7 @@
-from email.policy import default
+from time import timezone
+
 from django.db import models
+from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 from django.db.models import CharField, ForeignKey
 
@@ -41,9 +43,16 @@ class User(models.Model):
     current_exam_message_id = models.CharField(max_length=500, default="")
     current_page = models.IntegerField(default=0)
     set_state_time = models.DateTimeField(null=True)
+    start_interval_time = models.DateTimeField(null=True, default=timezone.now)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} : {self.department}"
+
+class ReportInterval(models.Model):
+    id = models.DateTimeField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    interval_minutes = models.IntegerField()
+    time_field = models.CharField(max_length=50)
 
 class ExamResult(models.Model):
     id = models.AutoField(primary_key=True)

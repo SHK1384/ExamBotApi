@@ -86,3 +86,8 @@ class SetCurrentPage(serializers.Serializer):
 class SetCurrentVipMessageId(serializers.Serializer):
     user_id = serializers.CharField()
     current_vip_message_id = serializers.CharField()
+
+class CreateReportIntervalSerializer(serializers.Serializer):
+    user_id = serializers.CharField()
+    interval_minutes = serializers.IntegerField()
+    time_field = serializers.CharField()

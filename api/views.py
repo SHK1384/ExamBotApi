@@ -15,11 +15,12 @@ from rest_framework.decorators import parser_classes
 from rest_framework.parsers import FormParser
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-from .models import ExamBox, User, ExamResult, Exam, Department, FileBox, ExamResultLong
+from .models import ExamBox, User, ExamResult, Exam, Department, FileBox, ExamResultLong, ReportInterval
 
-from api.serializers import ExamBoxSerializer, ExamResultSerializer, SetCurrentVipMessageId, UserSerializer, UserStateGetSerializer, \
+from api.serializers import ExamBoxSerializer, ExamResultSerializer, SetCurrentVipMessageId, UserSerializer, \
+    UserStateGetSerializer, \
     UserStateSetSerializer, UserRegisterSerializer, SetUserAnswerState, SetUserCurrentMessageId, SetCurrentQuestion, \
-    SetCurrentExamMessageId, SetCurrentPage, SetCurrentVipMessageId
+    SetCurrentExamMessageId, SetCurrentPage, SetCurrentVipMessageId, CreateReportIntervalSerializer
 
 
 # Create your views here.
@@ -92,6 +93,7 @@ class ProfileView(ViewSet):
     set_user_current_exam_message_id = SetCurrentExamMessageId
     set_user_current_page = SetCurrentPage
     set_message_vip_id_serializer = SetCurrentVipMessageId
+    create_interval_report_serializer = CreateReportIntervalSerializer
 
     def get_all_users(self, request):
         users = User.objects.all()
@@ -280,3 +282,11 @@ class ProfileView(ViewSet):
                 user.save()
                 return Response({"message": "Done"}, status=status.HTTP_200_OK)
 
+    def create_report_interval(self, request):
+        with transaction.atomic():
+            serialized_output = self.create_interval_report_serializer(data=request.data)
+            if serialized_output.is_valid(raise_exception=True):
+                user = User.objects.get(userid=request.data['user_id'])
+                report_interval = ReportInterval(user=request.user, interval_minutes=serialized_output.data['interval_minutes'], time_field=serialized_output.data['time_field'])
+                report_interval.save()
+                return Respone({"message": "Done"}, status=status.HTTP_201_CREATED)
