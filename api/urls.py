@@ -80,5 +80,5 @@ urlpatterns = [
     path('create-filebox/', create_filebox, name='create_filebox'),
     path('create-exam-result-long/', create_exam_result_long, name='create_exam_result_long'),
     path('set-message-vip-id/', set_message_vip_id, name='set_message_vip_id'),
-    path('create-reprot-interval/', create_report_interval, name='create_report_interval'),
+    path('create-report-interval/', create_report_interval, name='create_report_interval'),
 ]
